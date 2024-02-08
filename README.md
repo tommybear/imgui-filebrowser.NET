@@ -1,60 +1,45 @@
-# imgui-filebrowser
+# imgui-filebrowser.NET
 
-[imgui-filebrowser](https://github.com/AirGuanZ/imgui-filebrowser) is a header-only file browser implementation for [dear-imgui](https://github.com/ocornut/imgui). C++ 17 is required.
+[imgui-filebrowser.NET](https://github.com/tommybear/imgui-filebrowser.NET) is a single .cs file browser implementation for [MonoGame.ImGuiNet](https://github.com/Mezo-hx/MonoGame.ImGuiNet).
 
 ![IMG](./screenshots/0.png)
 
 ## Getting Started
 
-`imfilebrowser.h` should be included after `imgui.h`:
+Instead of creating a file dialog with an immediate function call, you need to create a `FileBrowser` instance, open it with member function `Open()`, and call `Display()` in each frame. Here is a simple example:
 
-```cpp
-#include <imgui.h>
-#include <imfilebrowser.h>
-```
+```cs
+/*
+ * Originally adapted from withoutaface/MonoGameImGuiNETexamples which is a port of the C++ Dear IMGUI sample code for the C++ version of Dear ImGui
+ */
 
-Instead of creating a file dialog with an immediate function call, you need to create a `ImGui::FileBrowser` instance, open it with member function `Open()`, and call `Display()` in each frame. Here is a simple example:
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
+using System;
+using MonoGame.ImGuiNet;
+using ImGuiNET;
 
-```cpp
-#include <imgui.h>
-#include <imfilebrowser.h>
-
-int main()
+namespace Monogame.ImGuiNetSamples
 {
-    //...initialize rendering window and imgui
-    
-    // create a file browser instance
-    ImGui::FileBrowser fileDialog;
-    
-    // (optional) set browser properties
-    fileDialog.SetTitle("title");
-    fileDialog.SetTypeFilters({ ".h", ".cpp" });
-    
-    // mainloop
-    while(continueRendering)
+    /// <summary>
+    /// This is the main type for your game.
+    /// </summary>
+    public class Game1 : Game
     {
-        //...do other stuff like ImGui::NewFrame();
-        
-        if(ImGui::Begin("dummy window"))
+        ImGuiFileBrowser imGuiFileBrowser = new ImGuiFileBrowser(ImGuiFileBrowserFlags.None);
+
+        public void LoadContent()
         {
-            // open file dialog when user clicks this button
-            if(ImGui::Button("open file dialog"))
-                fileDialog.Open();
+            imGuiFileBrowser.Open();
         }
-        ImGui::End();
-        
-        fileDialog.Display();
-        
-        if(fileDialog.HasSelected())
+
+        public void Draw(GameTime gameTime)
         {
-            std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
-            fileDialog.ClearSelected();
+            imGuiFileBrowser.Display();
         }
-        
-        //...do other stuff like ImGui::Render();
     }
-    
-    //...shutdown
 }
 ```
 
@@ -62,7 +47,7 @@ int main()
 
 Various options can be combined with '|' and passed to the constructor:
 
-```cpp
+```cs
 enum ImGuiFileBrowserFlags_
 {
     ImGuiFileBrowserFlags_SelectDirectory   = 1 << 0, // select directory instead of regular file
@@ -82,7 +67,7 @@ When `ImGuiFileBrowserFlags_MultipleSelection` is enabled, use `fileBrowser.GetM
 
 Here are some common examples:
 
-```cpp
+```cs
 // select single regular file for opening
 0
 // select multiple regular files for opening
@@ -113,8 +98,7 @@ ImGuiFileBrowserFlags_SelectDirectory | ImGuiFileBrowserFlags_HideRegularFiles
 
 * (optionally) use `browser.SetTypeFilters({".h", ".cpp"})` to set file extension filters.
 * ".*" matches with any extension
-* filters are case-insensitive on Windows platform
 
 ## Note
-
-The filebrowser implementation queries drive list via Win32 API (only on Windows). Thus `<Windows.h>` is included in `<imfilebrowser.h>`, which may pollute the global namespace. This can be solved by simply moving the `GetDrivesBitMask()` definition into a cpp file.
+3
+The filebrowser implementation queries drive list via .net core API (cross platform).
