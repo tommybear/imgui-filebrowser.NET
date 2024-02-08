@@ -9,10 +9,6 @@
 Instead of creating a file dialog with an immediate function call, you need to create a `FileBrowser` instance, open it with member function `Open()`, and call `Display()` in each frame. Here is a simple example:
 
 ```cs
-/*
- * Originally adapted from withoutaface/MonoGameImGuiNETexamples which is a port of the C++ Dear IMGUI sample code for the C++ version of Dear ImGui
- */
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
