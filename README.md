@@ -164,6 +164,257 @@ These flags can be combined to tailor the file browser's functionality to fit yo
 fileBrowser = new imFileBrowser(ImGuiFileBrowserFlags.SelectDirectory | ImGuiFileBrowserFlags.MultipleSelection | ImGuiFileBrowserFlags.HideRegularFiles);
 ```
 
+# `imgui-filebrowser.NET` API Documentation
+
+## Overview
+
+`imgui-filebrowser.NET` is a versatile file browser library for MonoGame applications, built on top of `ImGui.NET`. It provides an easy-to-use interface for file selection, directory navigation, and more, with extensive customization options.
+
+## Classes
+
+### `imFileBrowser`
+
+The main class for creating and managing a file browser instance.
+
+#### Constructors
+
+- `imFileBrowser(ImGuiFileBrowserFlags flags = ImGuiFileBrowserFlags.None)`
+  Initializes a new instance of the file browser with optional flags for customization.
+
+#### Methods
+
+- `void Open()`
+  Opens the file browser window.
+
+- `void Close()`
+  Closes the file browser window.
+
+- `void Display()`
+  Renders the file browser and handles user interaction. This method should be called every frame.
+
+- `void SetPwd(string pwd)`
+  Sets the current working directory for the file browser.
+
+- `void SetTitle(string title)`
+  Sets the title of the file browser window.
+
+- `void SetTypeFilters(List<string> typeFilters)`
+  Sets the file type filters for the file browser.
+
+- `void SetCurrentTypeFilterIndex(int index)`
+  Selects the current file type filter by index.
+
+- `void SetWindowSize(int width, int height)`
+  Sets the initial size of the file browser window.
+
+- `void SetWindowPos(int posX, int posY)`
+  Sets the initial position of the file browser window.
+
+- `bool HasSelected()`
+  Returns `true` if the user has made a selection.
+
+- `List<string> GetSelected()`
+  Returns a list of selected file paths.
+
+- `void ClearSelected()`
+  Clears the current selection.
+
+- `bool HasCancelled()`
+  Returns `true` if the user has closed the file browser without making a selection.
+
+#### Properties
+
+- `ImGuiFileBrowserFlags Flags { get; set; }`
+  Gets or sets the flags used for file browser customization.
+
+- `string Pwd { get; }`
+  Gets the current working directory.
+
+- `bool IsOpened { get; }`
+  Checks if the file browser window is currently open.
+
+## Enums
+
+### `ImGuiFileBrowserFlags`
+
+Flags for customizing the behavior of the file browser.
+
+- `None`
+- `SelectDirectory`
+- `EnterNewFilename`
+- `NoModal`
+- `NoTitleBar`
+- `NoStatusBar`
+- `CloseOnEsc`
+- `CreateNewDir`
+- `MultipleSelection`
+- `HideRegularFiles`
+- `ConfirmOnEnter`
+
+## Usage Example
+
+Below is a simple usage example of how to integrate `imgui-filebrowser.NET` into a MonoGame project:
+
+```csharp
+private imFileBrowser fileBrowser;
+
+protected override void Initialize()
+{
+    // Initialize the file browser
+    fileBrowser = new imFileBrowser(ImGuiFileBrowserFlags.None);
+    fileBrowser.SetTitle("Select File");
+    fileBrowser.SetTypeFilters(new List<string> { "*.png", "*.jpg" });
+}
+
+protected override void Update(GameTime gameTime)
+{
+    if (userRequestedFileBrowser)
+    {
+        fileBrowser.Open();
+    }
+
+    if (fileBrowser.HasSelected())
+    {
+        Console.WriteLine($"Selected file: {fileBrowser.GetSelected()[0]}");
+        fileBrowser.ClearSelected();
+    }
+}
+
+protected override void Draw(GameTime gameTime)
+{
+    // Render the file browser
+    fileBrowser.Display();
+}
+```
+
+
+## Default File Type Colorization
+
+The `imgui-filebrowser.NET` library predefines colors for a variety of file types to enhance visual navigation. Below is a list of file extensions and their associated colors. These colors are applied automatically based on the file's extension:
+
+### Document and Text Files
+- `.txt`, `.doc`, `.docx`: Light Grey
+- `.pdf`: Red
+- `.md`: Orange-Brown
+
+### Image Files
+- `.png`, `.jpg`, `.jpeg`: Orange
+- `.gif`: Light Green
+- `.bmp`: Brown
+
+### Programming and Source Code Files
+- `.cs`: Green
+- `.cpp`: Teal
+- `.py`: Light Blue
+- `.java`: Orange-Brown
+- `.ts`: Sky Blue
+
+### Audio and Video Files
+- `.mp3`: Magenta
+- `.wav`: Purple
+- `.mp4`: Reddish
+- `.avi`: Blue
+
+### Scripting and Configuration Files
+- `.sh`: Dark Green
+- `.yaml`, `.json`: Dark Orange
+- `.ini`: Grey
+
+### Data and Database Files
+- `.sql`: Olive Yellow
+- `.db`, `.sqlite`: Brownish
+
+### Web and Internet Files
+- `.html`: Soft Red
+- `.css`: Soft Blue
+- `.js`: Yellow
+- `.php`: Light Purple
+
+### Multimedia and Design
+- `.psd`: Dark Cyan
+- `.ai`: Bright Red
+- `.fla`: Orange-Yellow
+- `.svg`: Turquoise
+
+### Executable and Binary Files
+- `.dll`, `.so`: Purple
+- `.exe`: Bright Red
+- `.bin`: Dark Grey
+
+### Archive Files
+- `.zip`, `.rar`, `.7z`: Olive
+- `.tar`: Brown
+
+### Engineering and Design
+- `.cad`, `.dwg`, `.dxf`: Blue-ish
+- `.stl`: Pink-ish
+
+### Science and Data Analysis
+- `.pdb`: Gold
+- `.csv`: Dark Orange
+- `.nc`, `.dat`: Light Blue
+
+### Scripting and Markup Languages
+- `.lua`: Green
+- `.perl`: Purple
+- `.xml`: Soft Red
+
+### Virtual Machine and Container Files
+- `.vmdk`, `.ova`: Lavender
+- `.dockerfile`: Turquoise
+
+### Miscellaneous
+- `.iso`: Yellow
+- `.torrent`: Dark Green
+- `.vbs`: Purple
+
+### Development and Build Files
+- `.makefile`: Brown
+- `.cmake`: Slate Blue
+- `.docker-compose.yml`: Dark Cyan
+
+### Project Management and Collaboration
+- `.ppt`, `.pptx`: Dark Red
+- `.xls`, `.xlsx`: Dark Green
+
+These colorizations are designed to make file browsing more intuitive by visually distinguishing file types. Developers can customize these colors or add new associations as needed to tailor the file browser to their application's requirements.
+
+## Type Colorization
+
+Type colorization allows you to customize the appearance of files and directories in the file browser based on their types or extensions. This feature enhances the user experience by making it easier to distinguish between different file types at a glance.
+
+### Setting Colors for File Types
+
+The file browser supports setting specific colors for different file extensions to help users quickly identify file types. This is managed through a dictionary mapping file extensions to colors.
+
+#### Methods for Type Colorization
+
+- `void SetFolderColor(float r, float g, float b, float a)`
+  Sets the color for directory entries in the file browser. Colors are specified as RGBA floats ranging from 0 to 1.
+
+- `void SetFileColor(float r, float g, float b, float a)`
+  Sets the default color for file entries in the file browser. This color is used for files that do not match any specific extension color rule.
+
+- `void SetTypeColor(string extension, float r, float g, float b, float a)`
+  Adds or updates the color associated with a specific file extension. The `extension` parameter should include the dot, e.g., `.txt`.
+
+#### Example
+
+```csharp
+// Set a custom color for folders
+fileBrowser.SetFolderColor(0.5f, 0.5f, 1.0f, 1.0f); // Light blue
+
+// Set a default file color
+fileBrowser.SetFileColor(0.9f, 0.9f, 0.9f, 1.0f); // Almost white
+
+// Set colors for specific file types
+fileBrowser.SetTypeColor(".txt", 1.0f, 1.0f, 0.0f, 1.0f); // Yellow for text files
+fileBrowser.SetTypeColor(".cs", 0.0f, 1.0f, 0.0f, 1.0f);  // Green for C# source files
+```
+
+
+
+
 ## Contributing
 
 We welcome contributions to the `imgui-filebrowser.NET` project. Whether it's through submitting bug reports, requesting features, or contributing code, your input is highly appreciated.
