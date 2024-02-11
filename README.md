@@ -191,8 +191,4 @@ For the full license text, please see the [LICENSE](LICENSE) file in the reposit
 
 ## Support
 
-If you encounter any issues or have questions about `imgui-filebrowser.NET`, please feel free to open an issue on the [GitHub issue tracker](https://github.com/tommybear/imgui-filebrowser.NET/issues). We aim to provide support and address issues promptly.
-
----
-
-This documentation aims to provide all the necessary information to get started with `imgui-filebrowser.NET`, utilize its features to the fullest, and contribute to its development. We hope this tool significantly enhances your MonoGame project's file browsing capabilities.
+If you encounter any issues or have questions about `imgui-filebrowser.NET`, please feel free to open an issue on the [GitHub issue tracker](https://github.com/tommybear/imgui-filebrowser.NET/issues).
