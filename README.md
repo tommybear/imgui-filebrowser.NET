@@ -440,7 +440,7 @@ For the full license text, please see the [LICENSE](LICENSE) file in the reposit
 
 - Thanks to the creators and contributors of [ImGui.NET](https://github.com/mellinoe/ImGui.NET) for the fantastic immediate mode GUI library.
 - Thanks to [MonoGame](https://www.monogame.net/) for providing the framework that allows game developers to build amazing games.
-- This project uses the great [MonoGame.ImGuiNet](https://github.com/Mezo-hx/MonoGame.ImGuiNet), a fork of another excellent project, as its functional base
+- This project uses the great [MonoGame.ImGuiNet](https://github.com/Mezo-hx/MonoGame.ImGuiNet), as its functional base
 
 ## Support
 
