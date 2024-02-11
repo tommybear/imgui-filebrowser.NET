@@ -5,7 +5,7 @@
 ![303901916-4224bfd9-5e07-44ea-8e7e-22e263f962c1](https://github.com/tommybear/imgui-filebrowser.NET/assets/1712535/ddfbd971-7539-44f3-98cf-3aa8724d2af3)
 
 
-`imgui-filebrowser.NET` is a highly customizable, easy-to-use file browser for MonoGame applications, leveraging the power of `ImGui.NET`. It is designed to provide developers with a simple yet powerful tool to add file browsing capabilities to their games or tools, with a focus on ease of integration and flexibility.
+`imgui-filebrowser.NET` is a highly customizable, easy-to-use file browser for MonoGame applications, leveraging the power of `MonoGame.ImGuiNet`. It is designed to provide developers with a simple yet powerful tool to add file browsing capabilities to their games or tools, with a focus on ease of integration and flexibility.
 
 ## Features
 
@@ -18,7 +18,7 @@
 
 ## Getting Started
 
-To get started with `imgui-filebrowser.NET`, you'll need to have a MonoGame project with `ImGui.NET` set up. If you haven't set up `ImGui.NET` in your project, follow the [ImGui.NET setup instructions](https://github.com/mellinoe/ImGui.NET#usage-with-monogame-and-fna) first.
+To get started with `imgui-filebrowser.NET`, you'll need to have a MonoGame project with `MonoGame.ImGuiNet` set up. If you haven't set up `MonoGame.ImGuiNet` in your project, go here first [MonoGame.ImGuiNet](https://github.com/Mezo-hx/MonoGame.ImGuiNet).
 
 ### Installation
 
@@ -130,6 +130,7 @@ For the full license text, please see the [LICENSE](LICENSE) file in the reposit
 
 - Thanks to the creators and contributors of [ImGui.NET](https://github.com/mellinoe/ImGui.NET) for the fantastic immediate mode GUI library.
 - Thanks to [MonoGame](https://www.monogame.net/) for providing the framework that allows game developers to build amazing games.
+- This project uses the great Monogame-ImGui [MonoGame.ImGuiNet](https://github.com/Mezo-hx/MonoGame.ImGuiNet), a fork of another excellent project, as its functional base
 
 ## Support
 
