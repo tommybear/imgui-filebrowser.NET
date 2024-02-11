@@ -547,6 +547,7 @@ namespace FileBrowser
                         if (ImGui.Selectable(TypeFilters[i], selected) && !selected)
                         {
                             TypeFilterIndex = (uint)i;
+                            UpdateFileRecords();
                         }
                     }
 
