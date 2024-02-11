@@ -2,7 +2,8 @@
 
 [imgui-filebrowser.NET](https://github.com/tommybear/imgui-filebrowser.NET) is a single .cs file browser implementation for [MonoGame.ImGuiNet](https://github.com/Mezo-hx/MonoGame.ImGuiNet).
 
-![IMG](./screenshots/0.png)
+![image](https://github.com/tommybear/imgui-filebrowser.NET/assets/1712535/ffd7ed68-bd9c-4744-beba-999db306501b)
+
 
 ## Getting Started
 
@@ -12,28 +13,106 @@ Instead of creating a file dialog with an immediate function call, you need to c
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
-using System;
-using MonoGame.ImGuiNet;
+using System.Linq;
 using ImGuiNET;
+using FileBrowser;
+using MonoGame.ImGuiNet;
+using System.Diagnostics;
 
-namespace Monogame.ImGuiNetSamples
+namespace ImguiFileBrowserNet
 {
-    /// <summary>
-    /// This is the main type for your game.
-    /// </summary>
     public class Game1 : Game
     {
-        ImGuiFileBrowser imGuiFileBrowser = new ImGuiFileBrowser(ImGuiFileBrowserFlags.None);
+        private GraphicsDeviceManager _graphics;
+        private SpriteBatch _spriteBatch;
+        private imFileBrowser fileBrowser;
+        ImGuiRenderer GuiRenderer;
 
-        public void LoadContent()
+        public Game1()
         {
-            imGuiFileBrowser.Open();
+            _graphics = new GraphicsDeviceManager(this);
+            Content.RootDirectory = "Content";
+            IsMouseVisible = true;
+
+            Window.AllowUserResizing = true;
         }
 
-        public void Draw(GameTime gameTime)
+        protected override void Initialize()
         {
-            imGuiFileBrowser.Display();
+            _graphics.PreferredBackBufferWidth = 1920;
+            _graphics.PreferredBackBufferHeight = 1080;
+            _graphics.ApplyChanges();
+
+            GuiRenderer = new ImGuiRenderer(this);
+            GuiRenderer.RebuildFontAtlas();
+
+            fileBrowser = new imFileBrowser(0);
+            fileBrowser.SetTitle("File Browser");
+            fileBrowser.SetPwd(".");
+            fileBrowser.SetTypeFilters(new string[] { "*.png", "*.bmp", "*.*" }.ToList<string>());
+            // Not yet implemented
+            //fileBrowser.SetOkButtonLabel("Select");
+            //fileBrowser.SetCancelButtonLabel("Cancel");
+            fileBrowser.SetWindowPos(0, 300);
+            
+            base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            // TODO: use this.Content to load your game content here
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
+
+            // TODO: Add your update logic here
+
+            base.Update(gameTime);
+        }
+
+        private void DrawImGuiMenuBar()
+        {
+            if (ImGui.BeginMainMenuBar())
+            {
+                if (ImGui.BeginMenu("File"))
+                {
+                    if (ImGui.MenuItem("Open", "Ctrl+O")) { fileBrowser.Open(); }
+                    ImGui.EndMenu();
+                }
+                ImGui.EndMainMenuBar();
+            }
+        }
+
+        protected override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+            
+            GuiRenderer.BeginLayout(gameTime);
+
+            DrawImGuiMenuBar();
+
+            fileBrowser.Display();
+
+            if(fileBrowser.HasSelected())
+            {
+                foreach (var file in fileBrowser.GetSelected())
+                {
+                    Debug.WriteLine(file);
+                }
+            }
+
+            if(fileBrowser.HasCancelled())
+            {
+                Debug.WriteLine("Cancelled");
+            }
+
+            GuiRenderer.EndLayout();
+            base.Draw(gameTime);
         }
     }
 }
@@ -44,22 +123,21 @@ namespace Monogame.ImGuiNetSamples
 Various options can be combined with '|' and passed to the constructor:
 
 ```cs
-enum ImGuiFileBrowserFlags_
+public enum ImGuiFileBrowserFlags
 {
-    ImGuiFileBrowserFlags_SelectDirectory   = 1 << 0, // select directory instead of regular file
-    ImGuiFileBrowserFlags_EnterNewFilename  = 1 << 1, // allow user to enter new filename when selecting regular file
-    ImGuiFileBrowserFlags_NoModal           = 1 << 2, // file browsing window is modal by default. specify this to use a popup window
-    ImGuiFileBrowserFlags_NoTitleBar        = 1 << 3, // hide window title bar
-    ImGuiFileBrowserFlags_NoStatusBar       = 1 << 4, // hide status bar at the bottom of browsing window
-    ImGuiFileBrowserFlags_CloseOnEsc        = 1 << 5, // close file browser when pressing 'ESC'
-    ImGuiFileBrowserFlags_CreateNewDir      = 1 << 6, // allow user to create new directory
-    ImGuiFileBrowserFlags_MultipleSelection = 1 << 7, // allow user to select multiple files. this will hide ImGuiFileBrowserFlags_EnterNewFilename
-    ImGuiFileBrowserFlags_HideRegularFiles  = 1 << 8, // hide regular files when ImGuiFileBrowserFlags_SelectDirectory is enabled
-    ImGuiFileBrowserFlags_ConfirmOnEnter    = 1 << 9, // confirm selection when pressnig 'ENTER'
-};
+    None = 0,
+    SelectDirectory = 1 << 0, // select directory instead of regular file
+    EnterNewFilename = 1 << 1, // allow user to enter new filename when selecting regular file
+    NoModal = 1 << 2, // file browsing window is modal by default. specify this to use a popup window
+    NoTitleBar = 1 << 3, // hide window title bar
+    NoStatusBar = 1 << 4, // hide status bar at the bottom of browsing window
+    CloseOnEsc = 1 << 5, // close file browser when pressing 'ESC'
+    CreateNewDir = 1 << 6, // allow user to create new directory
+    MultipleSelection = 1 << 7, // allow user to select multiple files. this will hide ImGuiFileBrowserFlags_EnterNewFilename
+    HideRegularFiles = 1 << 8, // hide regular files when ImGuiFileBrowserFlags_SelectDirectory is enabled
+    ConfirmOnEnter = 1 << 9, // confirm selection when pressnig 'ENTER'
+}
 ```
-
-When `ImGuiFileBrowserFlags_MultipleSelection` is enabled, use `fileBrowser.GetMultiSelected()` to get all selected filenames (instead of `fileBrowser.GetSelected()`, which returns only one of them).
 
 Here are some common examples:
 
@@ -92,9 +170,7 @@ ImGuiFileBrowserFlags_SelectDirectory | ImGuiFileBrowserFlags_HideRegularFiles
 
 ## Type Filters
 
-* (optionally) use `browser.SetTypeFilters({".h", ".cpp"})` to set file extension filters.
-* ".*" matches with any extension
+* (optionally) use `browser.SetTypeFilters({"*.h", "*.cpp"})` to set file extension filters.
+* "*.*" matches with any extension
 
-## Note
-3
-The filebrowser implementation queries drive list via .net core API (cross platform).
+This browser is cross platform.
