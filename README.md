@@ -1,177 +1,129 @@
 # imgui-filebrowser.NET
 
-[imgui-filebrowser.NET](https://github.com/tommybear/imgui-filebrowser.NET) is a single .cs file browser implementation for [MonoGame.ImGuiNet](https://github.com/Mezo-hx/MonoGame.ImGuiNet).
+`imgui-filebrowser.NET` is a highly customizable, easy-to-use file browser for MonoGame applications, leveraging the power of `ImGui.NET`. It is designed to provide developers with a simple yet powerful tool to add file browsing capabilities to their games or tools, with a focus on ease of integration and flexibility.
 
-![image](https://github.com/tommybear/imgui-filebrowser.NET/assets/1712535/ded7552e-0e18-40a8-8b37-8ca45fa6560f)
+## Features
 
-
+- **Single File Integration**: Easy to integrate, with the entire file browser contained in a single `.cs` file.
+- **Customizable Appearance**: Offers customizable colors for files, folders, and various file types, enhancing the visual experience.
+- **Flexible Browsing Options**: Supports browsing for files, directories, or both, with options for filtering by file type.
+- **User Interaction**: Provides functionality for selecting single or multiple files, creating new directories, and more.
+- **Adaptable UI**: Allows setting of initial window size, position, and various UI flags for customization.
+- **Type Filtering**: Supports filtering visible files by extension, with support for custom type filters.
 
 ## Getting Started
 
-Instead of creating a file dialog with an immediate function call, you need to create a `FileBrowser` instance, open it with member function `Open()`, and call `Display()` in each frame. Here is a simple example:
+To get started with `imgui-filebrowser.NET`, you'll need to have a MonoGame project with `ImGui.NET` set up. If you haven't set up `ImGui.NET` in your project, follow the [ImGui.NET setup instructions](https://github.com/mellinoe/ImGui.NET#usage-with-monogame-and-fna) first.
 
-```cs
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System.Linq;
-using ImGuiNET;
-using FileBrowser;
-using MonoGame.ImGuiNet;
-using System.Diagnostics;
+### Installation
 
-namespace ImguiFileBrowserNet
-{
-    public class Game1 : Game
+1. **Download** the `imFileBrowser.cs` file from the [imgui-filebrowser.NET repository](https://github.com/tommybear/imgui-filebrowser.NET).
+2. **Add** the file to your MonoGame project.
+3. **Ensure** you have `ImGui.NET` referenced in your project.
+
+### Basic Usage
+
+To use the file browser in your game or application, follow these steps:
+
+1. **Instantiate** the file browser in your game class:
+
+    ```csharp
+    private imFileBrowser fileBrowser;
+    ```
+
+2. **Initialize** the file browser in your game's `Initialize` method or constructor:
+
+    ```csharp
+    fileBrowser = new imFileBrowser(ImGuiFileBrowserFlags.None);
+    ```
+
+3. **Configure** the file browser as needed (optional):
+
+    ```csharp
+    fileBrowser.SetTitle("Browse Files");
+    fileBrowser.SetPwd(Environment.CurrentDirectory); // Start in the current directory
+    fileBrowser.SetTypeFilters(new List<string> { "*.png", "*.jpg", "*.*" }); // Example filters
+    ```
+
+4. **Open** the file browser when needed:
+
+    ```csharp
+    fileBrowser.Open();
+    ```
+
+5. **Display** the file browser in your game's `Update` method:
+
+    ```csharp
+    fileBrowser.Display();
+    ```
+
+6. **Handle** selections or cancellations:
+
+    ```csharp
+    if (fileBrowser.HasSelected())
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
-        private imFileBrowser fileBrowser;
-        ImGuiRenderer GuiRenderer;
-
-        public Game1()
-        {
-            _graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
-            IsMouseVisible = true;
-
-            Window.AllowUserResizing = true;
-        }
-
-        protected override void Initialize()
-        {
-            _graphics.PreferredBackBufferWidth = 1920;
-            _graphics.PreferredBackBufferHeight = 1080;
-            _graphics.ApplyChanges();
-
-            GuiRenderer = new ImGuiRenderer(this);
-            GuiRenderer.RebuildFontAtlas();
-
-            fileBrowser = new imFileBrowser(0);
-            fileBrowser.SetTitle("File Browser");
-            fileBrowser.SetPwd(".");
-            fileBrowser.SetTypeFilters(new string[] { "*.png", "*.bmp", "*.*" }.ToList<string>());
-            // Not yet implemented
-            //fileBrowser.SetOkButtonLabel("Select");
-            //fileBrowser.SetCancelButtonLabel("Cancel");
-            fileBrowser.SetWindowPos(0, 300);
-            
-            base.Initialize();
-        }
-
-        protected override void LoadContent()
-        {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
-        }
-
-        protected override void Update(GameTime gameTime)
-        {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            // TODO: Add your update logic here
-
-            base.Update(gameTime);
-        }
-
-        private void DrawImGuiMenuBar()
-        {
-            if (ImGui.BeginMainMenuBar())
-            {
-                if (ImGui.BeginMenu("File"))
-                {
-                    if (ImGui.MenuItem("Open", "Ctrl+O")) { fileBrowser.Open(); }
-                    ImGui.EndMenu();
-                }
-                ImGui.EndMainMenuBar();
-            }
-        }
-
-        protected override void Draw(GameTime gameTime)
-        {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-            
-            GuiRenderer.BeginLayout(gameTime);
-
-            DrawImGuiMenuBar();
-
-            fileBrowser.Display();
-
-            if(fileBrowser.HasSelected())
-            {
-                foreach (var file in fileBrowser.GetSelected())
-                {
-                    Debug.WriteLine(file);
-                }
-            }
-
-            if(fileBrowser.HasCancelled())
-            {
-                Debug.WriteLine("Cancelled");
-            }
-
-            GuiRenderer.EndLayout();
-            base.Draw(gameTime);
-        }
+        Console.WriteLine($"Selected: {string.Join(", ", fileBrowser.GetSelected())}");
+        fileBrowser.ClearSelected();
     }
-}
-```
+    ```
 
-## Options
+## Customization
 
-Various options can be combined with '|' and passed to the constructor:
+`imgui-filebrowser.NET` offers various customization options to tailor the file browser to your needs:
 
-```cs
+- **Window Size and Position**: Set the initial size and position of the file browser window.
+- **Colors**: Customize colors for different elements and file types.
+- **Type Filters**: Define filters to only display files of certain types.
+- **Flags**: Use flags to enable or disable features like multi-selection, directory selection, and more.
+
+### Flags
+
+The `ImGuiFileBrowserFlags` enum provides flags for customization:
+
+```csharp
+[Flags]
 public enum ImGuiFileBrowserFlags
 {
     None = 0,
-    SelectDirectory = 1 << 0, // select directory instead of regular file
-    EnterNewFilename = 1 << 1, // allow user to enter new filename when selecting regular file
-    NoModal = 1 << 2, // file browsing window is modal by default. specify this to use a popup window
-    NoTitleBar = 1 << 3, // hide window title bar
-    NoStatusBar = 1 << 4, // hide status bar at the bottom of browsing window
-    CloseOnEsc = 1 << 5, // close file browser when pressing 'ESC'
-    CreateNewDir = 1 << 6, // allow user to create new directory
-    MultipleSelection = 1 << 7, // allow user to select multiple files. this will hide ImGuiFileBrowserFlags_EnterNewFilename
-    HideRegularFiles = 1 << 8, // hide regular files when ImGuiFileBrowserFlags_SelectDirectory is enabled
-    ConfirmOnEnter = 1 << 9, // confirm selection when pressnig 'ENTER'
+    SelectDirectory = 1 << 0,
+    EnterNewFilename = 1 << 1,
+    // Additional flags...
 }
-```
 
-Here are some common examples:
+## Contributing
 
-```cs
-// select single regular file for opening
-0
-// select multiple regular files for opening
-ImGuiFileBrowserFlags_MultipleSelection
-// select single directory for opening
-ImGuiFileBrowserFlags_SelectDirectory
-// select multiple directories for opening
-ImGuiFileBrowserFlags_SelectDirectory | ImGuiFileBrowserFlags_MultipleSelection
-// select single regular file for saving
-ImGuiFileBrowserFlags_EnterNewFilename | ImGuiFileBrowserFlags_CreateNewDir
-// select single directory for saving
-ImGuiFileBrowserFlags_SelectDirectory | ImGuiFileBrowserFlags_CreateNewDir
-// select single directory and hide regular files in browser
-ImGuiFileBrowserFlags_SelectDirectory | ImGuiFileBrowserFlags_HideRegularFiles
-```
+We welcome contributions to the `imgui-filebrowser.NET` project. Whether it's through submitting bug reports, requesting features, or contributing code, your input is highly appreciated.
 
-## Usage
+To contribute:
 
-* double click to enter a directory
-* single click to (de)select a regular file (or directory, when `ImGuiFileBrowserFlags_SelectDirectory` is enabled).
-*  When `ImGuiFileBrowserFlags_SelectDirectory` is enabled and no directory is selected, click `ok` to choose the current directory as selected result.
-*  When `ImGuiFileBrowserFlags_MultipleSelection` is enabled, hold  `Ctrl` for multi selection and `Shift` for range selection.  
-*  When `ImGuiFileBrowserFlags_MultipleSelection` is enabled, use `Ctrl + A` to select all (filtered) items.
-*  When `ImGuiFileBrowserFlags_CreateNewDir` is enabled, click the top-right little button "+" to create a new directory.
-*  When `ImGuiFileBrowserFlags_SelectDirectory` is not specified,  double click to choose a regular file as selected result.
+1. **Fork** the repository on GitHub.
+2. **Clone** the forked repository to your local machine.
+3. **Create a new branch** for your feature or fix.
+4. **Commit** your changes with clear, descriptive messages.
+5. **Push** your branch and changes to your fork on GitHub.
+6. **Submit a pull request** to the main `imgui-filebrowser.NET` repository with a clear description of the changes and any relevant issue numbers.
 
-## Type Filters
+Please ensure your code adheres to the existing style to maintain the project's consistency and readability.
 
-* (optionally) use `browser.SetTypeFilters({"*.h", "*.cpp"})` to set file extension filters.
-* "*.*" matches with any extension
+## License
 
-This browser is cross platform.
+`imgui-filebrowser.NET` is made available under the MIT License. This allows for both personal and commercial use, modification, distribution, and private use, under the conditions that the license and copyright notice are included with any substantial portions of the software.
+
+For the full license text, please see the [LICENSE](LICENSE) file in the repository.
+
+## Acknowledgments
+
+- Thanks to the creators and contributors of [ImGui.NET](https://github.com/mellinoe/ImGui.NET) for the fantastic immediate mode GUI library.
+- Thanks to [MonoGame](https://www.monogame.net/) for providing the framework that allows game developers to build amazing games.
+
+## Support
+
+If you encounter any issues or have questions about `imgui-filebrowser.NET`, please feel free to open an issue on the [GitHub issue tracker](https://github.com/tommybear/imgui-filebrowser.NET/issues). We aim to provide support and address issues promptly.
+
+## Changelog
+
+For a detailed history of changes and version updates, refer to the [CHANGELOG.md](CHANGELOG.md) file. We follow semantic versioning to track the changes and improvements made over time.
+
+---
+
+This documentation aims to provide all the necessary information to get started with `imgui-filebrowser.NET`, utilize its features to the fullest, and contribute to its development. We hope this tool significantly enhances your MonoGame project's file browsing capabilities.
