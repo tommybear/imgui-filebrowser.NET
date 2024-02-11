@@ -26,6 +26,8 @@ To get started with `imgui-filebrowser.NET`, you'll need to have a MonoGame proj
 2. **Add** the file to your MonoGame project.
 3. **Ensure** you have `ImGui.NET` referenced in your project.
 
+4. However, as a convenience a full solution with a test project is included so you can just build and run.
+
 ### Basic Usage
 
 To use the file browser in your game or application, follow these steps:
