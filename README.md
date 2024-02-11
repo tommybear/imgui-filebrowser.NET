@@ -90,9 +90,9 @@ To use the file browser in your game or application, follow these steps:
 - **Type Filters**: Define filters to only display files of certain types.
 - **Flags**: Use flags to enable or disable features like multi-selection, directory selection, and more.
 
-### Flags
+## Configuration Flags
 
-The `ImGuiFileBrowserFlags` enum provides flags for customization:
+The `imgui-filebrowser.NET` library allows customization through various flags provided by the `ImGuiFileBrowserFlags` enum. These flags can modify the behavior of the file browser, enabling features like directory selection, multiple file selections, and more. Below is a breakdown of each available flag:
 
 ```csharp
 [Flags]
@@ -111,10 +111,6 @@ public enum ImGuiFileBrowserFlags
     ConfirmOnEnter = 1 << 9, // confirm selection when pressnig 'ENTER'
 }
 ```
-
-## Configuration Flags
-
-The `imgui-filebrowser.NET` library allows customization through various flags provided by the `ImGuiFileBrowserFlags` enum. These flags can modify the behavior of the file browser, enabling features like directory selection, multiple file selections, and more. Below is a breakdown of each available flag:
 
 ### `None`
 
