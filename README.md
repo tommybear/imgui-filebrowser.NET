@@ -139,8 +139,6 @@ public enum ImGuiFileBrowserFlags
 }
 ```
 
-When `ImGuiFileBrowserFlags_MultipleSelection` is enabled, use `fileBrowser.GetMultiSelected()` to get all selected filenames (instead of `fileBrowser.GetSelected()`, which returns only one of them).
-
 Here are some common examples:
 
 ```cs
@@ -172,9 +170,7 @@ ImGuiFileBrowserFlags_SelectDirectory | ImGuiFileBrowserFlags_HideRegularFiles
 
 ## Type Filters
 
-* (optionally) use `browser.SetTypeFilters({".h", ".cpp"})` to set file extension filters.
-* ".*" matches with any extension
+* (optionally) use `browser.SetTypeFilters({"*.h", "*.cpp"})` to set file extension filters.
+* "*.*" matches with any extension
 
-## Note
-3
-The filebrowser implementation queries drive list via .net core API (cross platform).
+This browser is cross platform.
