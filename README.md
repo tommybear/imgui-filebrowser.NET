@@ -123,19 +123,20 @@ namespace ImguiFileBrowserNet
 Various options can be combined with '|' and passed to the constructor:
 
 ```cs
-enum ImGuiFileBrowserFlags_
+public enum ImGuiFileBrowserFlags
 {
-    ImGuiFileBrowserFlags_SelectDirectory   = 1 << 0, // select directory instead of regular file
-    ImGuiFileBrowserFlags_EnterNewFilename  = 1 << 1, // allow user to enter new filename when selecting regular file
-    ImGuiFileBrowserFlags_NoModal           = 1 << 2, // file browsing window is modal by default. specify this to use a popup window
-    ImGuiFileBrowserFlags_NoTitleBar        = 1 << 3, // hide window title bar
-    ImGuiFileBrowserFlags_NoStatusBar       = 1 << 4, // hide status bar at the bottom of browsing window
-    ImGuiFileBrowserFlags_CloseOnEsc        = 1 << 5, // close file browser when pressing 'ESC'
-    ImGuiFileBrowserFlags_CreateNewDir      = 1 << 6, // allow user to create new directory
-    ImGuiFileBrowserFlags_MultipleSelection = 1 << 7, // allow user to select multiple files. this will hide ImGuiFileBrowserFlags_EnterNewFilename
-    ImGuiFileBrowserFlags_HideRegularFiles  = 1 << 8, // hide regular files when ImGuiFileBrowserFlags_SelectDirectory is enabled
-    ImGuiFileBrowserFlags_ConfirmOnEnter    = 1 << 9, // confirm selection when pressnig 'ENTER'
-};
+    None = 0,
+    SelectDirectory = 1 << 0, // select directory instead of regular file
+    EnterNewFilename = 1 << 1, // allow user to enter new filename when selecting regular file
+    NoModal = 1 << 2, // file browsing window is modal by default. specify this to use a popup window
+    NoTitleBar = 1 << 3, // hide window title bar
+    NoStatusBar = 1 << 4, // hide status bar at the bottom of browsing window
+    CloseOnEsc = 1 << 5, // close file browser when pressing 'ESC'
+    CreateNewDir = 1 << 6, // allow user to create new directory
+    MultipleSelection = 1 << 7, // allow user to select multiple files. this will hide ImGuiFileBrowserFlags_EnterNewFilename
+    HideRegularFiles = 1 << 8, // hide regular files when ImGuiFileBrowserFlags_SelectDirectory is enabled
+    ConfirmOnEnter = 1 << 9, // confirm selection when pressnig 'ENTER'
+}
 ```
 
 When `ImGuiFileBrowserFlags_MultipleSelection` is enabled, use `fileBrowser.GetMultiSelected()` to get all selected filenames (instead of `fileBrowser.GetSelected()`, which returns only one of them).
