@@ -5,6 +5,7 @@ using System.Linq;
 using ImGuiNET;
 using FileBrowser;
 using MonoGame.ImGuiNet;
+using System.Diagnostics;
 
 namespace ImguiFileBrowserNet
 {
@@ -41,7 +42,7 @@ namespace ImguiFileBrowserNet
             //fileBrowser.SetOkButtonLabel("Select");
             //fileBrowser.SetCancelButtonLabel("Cancel");
             fileBrowser.SetWindowPos(0, 300);
-            fileBrowser.Open();
+            
             base.Initialize();
         }
 
@@ -62,13 +63,41 @@ namespace ImguiFileBrowserNet
             base.Update(gameTime);
         }
 
+        private void DrawImGuiMenuBar()
+        {
+            if (ImGui.BeginMainMenuBar())
+            {
+                if (ImGui.BeginMenu("File"))
+                {
+                    if (ImGui.MenuItem("Open", "Ctrl+O")) { fileBrowser.Open(); }
+                    ImGui.EndMenu();
+                }
+                ImGui.EndMainMenuBar();
+            }
+        }
+
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             
             GuiRenderer.BeginLayout(gameTime);
+
+            DrawImGuiMenuBar();
+
             fileBrowser.Display();
-            ImGui.End();
+
+            if(fileBrowser.HasSelected())
+            {
+                foreach (var file in fileBrowser.GetSelected())
+                {
+                    Debug.WriteLine(file);
+                }
+            }
+
+            if(fileBrowser.HasCancelled())
+            {
+                Debug.WriteLine("Cancelled");
+            }
 
             GuiRenderer.EndLayout();
             base.Draw(gameTime);
