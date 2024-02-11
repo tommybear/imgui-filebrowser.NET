@@ -51,19 +51,28 @@ To use the file browser in your game or application, follow these steps:
     fileBrowser.Open();
     ```
 
-5. **Display** the file browser in your game's `Update` method:
+5. **Display** the file browser in your game's `Draw` method:
 
     ```csharp
     fileBrowser.Display();
     ```
 
-6. **Handle** selections or cancellations:
+6. **Handle** selections:
 
     ```csharp
     if (fileBrowser.HasSelected())
     {
         Console.WriteLine($"Selected: {string.Join(", ", fileBrowser.GetSelected())}");
         fileBrowser.ClearSelected();
+    }
+    ```
+
+7. **Handle** cancellations:
+
+    ```csharp
+    if (fileBrowser.HasCancelled())
+    {
+        Console.WriteLine("Cancelled!");
     }
     ```
 
@@ -89,6 +98,7 @@ public enum ImGuiFileBrowserFlags
     EnterNewFilename = 1 << 1,
     // Additional flags...
 }
+```
 
 ## Contributing
 
