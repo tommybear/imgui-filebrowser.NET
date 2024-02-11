@@ -33,12 +33,13 @@ namespace ImguiFileBrowserNet
             GuiRenderer = new ImGuiRenderer(this);
             GuiRenderer.RebuildFontAtlas();
 
-            fileBrowser = new imFileBrowser(ImGuiFileBrowserFlags.NoModal);
+            fileBrowser = new imFileBrowser(0);
             fileBrowser.SetTitle("File Browser");
             fileBrowser.SetPwd(".");
-            fileBrowser.SetTypeFilters(new string[] { "*.*" }.ToList<string>());
-            fileBrowser.SetOkButtonLabel("Select");
-            fileBrowser.SetCancelButtonLabel("Cancel");
+            fileBrowser.SetTypeFilters(new string[] { "*.png", "*.bmp", "*.*" }.ToList<string>());
+            // Not yet implemented
+            //fileBrowser.SetOkButtonLabel("Select");
+            //fileBrowser.SetCancelButtonLabel("Cancel");
             fileBrowser.SetWindowPos(0, 300);
             fileBrowser.Open();
             base.Initialize();
