@@ -2,7 +2,8 @@
 
 [imgui-filebrowser.NET](https://github.com/tommybear/imgui-filebrowser.NET) is a single .cs file browser implementation for [MonoGame.ImGuiNet](https://github.com/Mezo-hx/MonoGame.ImGuiNet).
 
-![IMG](./screenshots/0.png)
+![image](https://github.com/tommybear/imgui-filebrowser.NET/assets/1712535/ffd7ed68-bd9c-4744-beba-999db306501b)
+
 
 ## Getting Started
 
