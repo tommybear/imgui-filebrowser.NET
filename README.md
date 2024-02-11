@@ -112,6 +112,60 @@ public enum ImGuiFileBrowserFlags
 }
 ```
 
+## Configuration Flags
+
+The `imgui-filebrowser.NET` library allows customization through various flags provided by the `ImGuiFileBrowserFlags` enum. These flags can modify the behavior of the file browser, enabling features like directory selection, multiple file selections, and more. Below is a breakdown of each available flag:
+
+### `None`
+
+Represents the default behavior with no special modifications applied.
+
+### `SelectDirectory`
+
+Enables the selection of directories instead of regular files. This is useful when you want users to specify a folder path rather than select individual files.
+
+### `EnterNewFilename`
+
+Allows users to enter a new filename, enabling the file browser to be used for file save operations. This flag makes it possible to specify the name of a new file directly within the file browser interface.
+
+### `NoModal`
+
+By default, the file browser opens in a modal window. Setting this flag changes the behavior to open the file browser in a non-modal, pop-up window instead.
+
+### `NoTitleBar`
+
+Hides the title bar of the file browser window. This option can be used for a more integrated or minimalistic UI appearance.
+
+### `NoStatusBar`
+
+Removes the status bar at the bottom of the file browser window. This is another option for simplifying the UI or when the status bar information is not needed.
+
+### `CloseOnEsc`
+
+Allows the file browser to close when the `ESC` key is pressed, providing a quick way to exit without making a selection.
+
+### `CreateNewDir`
+
+Enables the ability for users to create new directories from within the file browser. This is particularly useful for save file dialogs or when organizing files and folders is needed.
+
+### `MultipleSelection`
+
+Permits the selection of multiple files or directories, depending on the `SelectDirectory` flag's state. When enabled, users can select more than one item by Ctrl-clicking or Shift-clicking.
+
+### `HideRegularFiles`
+
+When the `SelectDirectory` flag is enabled, this flag hides all regular files, showing only directories. This is useful when the user is expected to select a directory, and files are not relevant to the operation.
+
+### `ConfirmOnEnter`
+
+Enables the selection confirmation with the `Enter` key. This provides a keyboard shortcut for quickly confirming selections without clicking the UI.
+
+These flags can be combined to tailor the file browser's functionality to fit your application's needs precisely. For example, to allow multiple directory selections without showing regular files, you could initialize the file browser like this:
+
+```csharp
+fileBrowser = new imFileBrowser(ImGuiFileBrowserFlags.SelectDirectory | ImGuiFileBrowserFlags.MultipleSelection | ImGuiFileBrowserFlags.HideRegularFiles);
+```
+
 ## Contributing
 
 We welcome contributions to the `imgui-filebrowser.NET` project. Whether it's through submitting bug reports, requesting features, or contributing code, your input is highly appreciated.
